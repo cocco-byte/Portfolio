@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#03050a" />
+    <meta name="description" content="A design and creative-development portfolio: design, WebGL, motion and interaction." />
+    <title>Portfolio | Mix the unexpected.</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body class="is-loading">
+    <a class="skip-link" href="#contact" data-go="contact">Skip to the contact form</a>
+    <canvas class="stage" data-stage aria-hidden="true"></canvas>
+
+    <div class="loader" data-loader role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <p class="loader__name" data-loader-name aria-hidden="true"></p>
+      <canvas class="loader__motif" data-loader-motif aria-hidden="true"></canvas>
+      <p class="loader__count visually-hidden"><span data-loader-count>0</span><span class="loader__unit">%</span><span class="visually-hidden"> loaded</span></p>
+      <div class="loader__rule" aria-hidden="true"><i data-loader-rule></i></div>
+      <dl class="loader__stats" aria-hidden="true">
+        <div><dt>Depth</dt><dd><span data-loader-depth>0</span> m</dd></div>
+        <div><dt>Particles</dt><dd><span data-loader-particles>0</span></dd></div>
+        <div><dt>Motif</dt><dd data-motif></dd></div>
+      </dl>
+      <div class="loader__trouble" data-loader-trouble role="alert" hidden>
+        <p class="loader__trouble-text" data-loader-trouble-text>This is taking a while.</p>
+        <div class="loader__choices">
+          <button type="button" class="pill pill--solid" data-loader-retry>Reload</button>
+          <button type="button" class="pill" data-loader-light>View the light version</button>
+        </div>
+      </div>
+      <div class="loader__enter" data-loader-enter>
+        <div class="loader__choices">
+          <button type="button" class="pill pill--solid" data-enter="sound">Enter with sound</button>
+          <button type="button" class="pill" data-enter="silent">Without sound</button>
+        </div>
+      </div>
+    </div>
+
+    <header class="masthead">
+      <a class="masthead__name" href="#top" data-go="hero"><span data-brand-name></span></a>
+      <nav class="masthead__nav" aria-label="Primary">
+        <a href="#about" data-go="about">About</a>
+        <a href="#services" data-go="services">Services</a>
+        <a href="#works" data-go="works:0">Works</a>
+        <a href="#contact" data-go="contact">Contact</a>
+      </nav>
+      <button type="button" class="sound motion-toggle" data-motion aria-pressed="true">
+        <span data-motion-label>Motion on</span>
+      </button>
+      <button type="button" class="sound" data-sound aria-pressed="false">
+        <span class="sound__label" data-sound-label>Sound off</span>
+        <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </button>
+    </header>
+
+    <div class="hud" data-hud aria-hidden="true">
+      <ol class="hud__seasons"><li data-hud-season>春</li><li data-hud-season>夏</li><li data-hud-season>秋</li><li data-hud-season>冬</li></ol>
+      <div class="hud__rail"><i></i></div>
+      <p class="hud__depth"><span data-hud-depth>0</span> m</p>
+    </div>
+
+    <p class="visually-hidden" aria-live="polite" data-announce></p>
+
+    <!-- the works' text, seen through water as it changes -->
+    <svg class="defs" aria-hidden="true" focusable="false">
+      <filter id="works-warp" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.006 0.022" numOctaves="2" seed="3" data-works-ripple />
+        <feDisplacementMap in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G" data-works-warp />
+      </filter>
+      <filter id="water-warp" x="-10%" y="-20%" width="120%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="2" seed="7" data-water-ripple />
+        <feDisplacementMap in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G" data-water-warp />
+      </filter>
+    </svg>
+
+    <main id="top" class="panels">
+      <section class="panel panel--hero" data-panel="hero" aria-labelledby="hero-title">
+        <p class="label" data-depth="0.6" data-motif></p>
+        <h1 id="hero-title" class="tagline" data-depth="1" tabindex="-1" data-reveal="chars" data-tagline></h1>
+        <p class="body body--hero" data-depth="1.4" data-reveal="sweep">A design and creative-development practice that fuses design, motion, interaction and creative coding into digital experiences only one brand could own.</p>
+      </section>
+
+      <section id="about" class="panel panel--about" data-panel="about" aria-labelledby="about-title">
+        <div class="about__text">
+          <p class="label" data-depth="0.6"><span class="label__season">春</span>About</p>
+          <h2 id="about-title" class="lede" data-depth="1" tabindex="-1" data-reveal="chars">Beautiful is not where it ends.<br />Something should stay with you<br />the moment you see it, the moment you touch it.</h2>
+          <p class="body" data-depth="1.3" data-reveal="sweep">I work across design and technology to turn a brand's character into something you can experience. Planning, design, motion, interaction and front-end development, without separating the idea from the build.</p>
+          <p class="note" data-depth="1.5" data-reveal="sweep">Based somewhere. Working everywhere.</p>
+        </div>
+        <figure class="about__portrait" data-depth="0.8" data-reveal="sweep" data-portrait hidden>
+          <img alt="Portrait" width="1448" height="1086" decoding="async" />
+        </figure>
+      </section>
+
+      <section id="services" class="panel panel--services" data-panel="services" aria-labelledby="services-title">
+        <p class="label" data-depth="0.6"><span class="label__season">夏</span>Services</p>
+        <h2 id="services-title" class="lede" data-depth="1" tabindex="-1" data-reveal="chars">From planning and design to development and life after launch.</h2>
+        <ol class="services" data-services data-reveal="rise"></ol>
+      </section>
+
+      <section class="panel panel--autumn" data-panel="autumn" aria-labelledby="autumn-title">
+        <p class="label" data-depth="0.6"><span class="label__season">秋</span>Works</p>
+        <h2 id="autumn-title" class="lede" data-depth="1" tabindex="-1" data-reveal="chars" data-works-lede>Selected work.</h2>
+      </section>
+
+      <section id="works" class="panel panel--works" data-panel="works" aria-labelledby="works-title">
+        <h2 id="works-title" class="visually-hidden">Works</h2>
+        <p class="label"><span class="label__season">秋</span>Works<span class="works__count"><span data-work-index>01</span> / <span data-work-total>01</span></span></p>
+        <nav class="works__nav" aria-label="All works"><ol class="works__list" data-work-list></ol></nav>
+        <div class="works__info" data-work-info>
+          <h3 class="works__name" data-work-name tabindex="-1" data-reveal="chars" lang="en"></h3>
+          <p class="body works__summary" data-work-summary data-reveal="sweep"></p>
+          <ul class="works__highlights" data-work-highlights aria-label="Highlights" data-reveal="rise"></ul>
+          <p class="works__facts" data-reveal="sweep"><span data-work-year></span><span data-work-role></span></p>
+          <ul class="works__stack" data-work-stack aria-label="Built with" data-reveal="rise"></ul>
+          <p class="works__links" data-reveal="sweep">
+            <a class="works__link" data-work-link target="_blank" rel="noopener noreferrer"><span data-work-host></span></a>
+          </p>
+        </div>
+        <div class="works__index visually-hidden" data-works-index></div>
+      </section>
+
+      <section id="contact" class="panel panel--contact" data-panel="contact" aria-labelledby="contact-title">
+        <p class="label" data-depth="0.6"><span class="label__season">冬</span>Contact</p>
+        <h2 id="contact-title" class="lede" data-depth="1" data-reveal="chars">New builds, redesigns, ongoing care: I'd love to hear about it.</h2>
+        <form class="form" data-contact-form data-observer-ignore data-depth="1.2" data-reveal="rise" novalidate>
+          <div class="form__field">
+            <label for="contact-name">Name</label>
+            <input id="contact-name" name="name" type="text" autocomplete="name" minlength="2" maxlength="60" required aria-describedby="contact-name-error" />
+            <p id="contact-name-error" class="form__error" data-error-for="name"></p>
+          </div>
+          <div class="form__field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="contact-email-error" />
+            <p id="contact-email-error" class="form__error" data-error-for="email"></p>
+          </div>
+          <div class="form__field form__field--wide">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" rows="3" minlength="20" maxlength="1200" required aria-describedby="contact-message-error"></textarea>
+            <p id="contact-message-error" class="form__error" data-error-for="message"></p>
+          </div>
+          <div class="form__trap" aria-hidden="true">
+            <label for="contact-company-website">Leave this field empty</label>
+            <input id="contact-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="form__actions">
+            <button type="submit" class="pill pill--solid" data-submit>Send</button>
+            <p class="form__status" data-contact-form-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel panel--finale" data-panel="finale" aria-label="Footer">
+        <div class="finale__meta" data-reveal="rise">
+          <p>© <span data-year></span> <span data-site-name></span></p>
+          <a href="#top" data-go="hero" class="finale__top">Back to top</a>
+        </div>
+      </section>
+    </main>
+
+    <div class="thanks" data-thanks role="dialog" aria-modal="true" aria-labelledby="thanks-title" hidden>
+      <div class="thanks__body">
+        <p class="label">Message received</p>
+        <h2 id="thanks-title" class="thanks__title" tabindex="-1" lang="en">Thank you.</h2>
+        <p class="body">I'll reply to the address you gave. A message sent from the deep is now on its way up.</p>
+        <button type="button" class="pill pill--solid" data-thanks-close>Back to the sea</button>
+      </div>
+    </div>
+  </body>
+</html>
