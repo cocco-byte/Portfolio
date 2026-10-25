@@ -879,6 +879,10 @@ body.is-loading .hud {
   margin-top: 4px;
 }
 
+.works__links[hidden] {
+  display: none;
+}
+
 .works__link {
   color: var(--paper);
   font: 400 12px/1 var(--font-sans);
@@ -1365,4 +1369,16 @@ html.no-webgl .works__index {
 
 html.no-webgl .finale__meta {
   position: static;
+}
+
+/* SoundCloud's player plays the music unseen; the masthead toggle drives it. */
+.sound__widget {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
 }

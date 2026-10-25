@@ -36,6 +36,13 @@ document.querySelectorAll('[data-year]').forEach((el) => {
   el.textContent = String(new Date().getFullYear());
 });
 document.title = `${site.name} | ${site.tagline}`;
+const musicCredit = $('[data-music-credit]');
+if (musicCredit && site.audio && site.audioCredit?.text) {
+  const link = musicCredit.querySelector('a');
+  link.textContent = site.audioCredit.text;
+  link.href = site.audioCredit.href || site.audio;
+  musicCredit.hidden = false;
+}
 const portraitFigure = $('[data-portrait]');
 if (portraitFigure && portrait) {
   portraitFigure.querySelector('img').src = portrait;

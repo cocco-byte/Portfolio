@@ -1,6 +1,22 @@
 // The sound toggle in the masthead. Plays a looping track when one is
 // configured, otherwise a soft generated ambience: a low detuned drone and
 // filtered noise like distant surf. The four bars follow an analyser.
+// A soundcloud.com URL plays through SoundCloud's widget in a hidden iframe;
+// its audio can't reach the analyser, so the bars then sway on their own.
+const SOUNDCLOUD = /^https?:\/\/(www\.|m\.)?soundcloud\.com\//;
+const WIDGET_API = 'https://w.soundcloud.com/player/api.js';
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.append(script);
+  });
+}
+
 export class Sound {
   constructor(button, source = '') {
     this.button = button;
@@ -18,6 +34,41 @@ export class Sound {
     this.handleVisibility = this.handleVisibility.bind(this);
     button?.addEventListener('click', this.toggle);
     document.addEventListener('visibilitychange', this.handleVisibility);
+    this.widget = null;
+    this.widgetReady = SOUNDCLOUD.test(source) ? this.loadWidget() : null;
+  }
+
+  // Load the widget while the page loads, so it is ready by the time the
+  // visitor chooses to enter with sound.
+  async loadWidget() {
+    try {
+      await loadScript(WIDGET_API);
+    } catch {
+      return null;
+    }
+    const frame = document.createElement('iframe');
+    frame.className = 'sound__widget';
+    frame.title = 'Background music';
+    frame.allow = 'autoplay';
+    frame.tabIndex = -1;
+    frame.setAttribute('aria-hidden', 'true');
+    const options = 'auto_play=false&buying=false&sharing=false&download=false&show_artwork=false&visual=false';
+    frame.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(this.source)}&${options}`;
+    document.body.append(frame);
+    const { Widget } = window.SC;
+    const widget = Widget(frame);
+    return new Promise((resolve) => {
+      widget.bind(Widget.Events.READY, () => {
+        // loop
+        widget.bind(Widget.Events.FINISH, () => {
+          widget.seekTo(0);
+          widget.play();
+        });
+        widget.setVolume(35);
+        this.widget = widget;
+        resolve(widget);
+      });
+    });
   }
 
   ensureAudio() {
@@ -90,6 +141,15 @@ export class Sound {
   }
 
   async play() {
+    if (this.widgetReady) {
+      const widget = this.widget ?? (await this.widgetReady);
+      if (!widget) return;
+      widget.play();
+      this.on = true;
+      this.sync();
+      this.frameId ||= requestAnimationFrame(this.render);
+      return;
+    }
     this.ensureAudio();
     if (!this.context) return;
     try {
@@ -107,6 +167,7 @@ export class Sound {
   }
 
   pause() {
+    this.widget?.pause();
     if (this.context) {
       const now = this.context.currentTime;
       this.master.gain.cancelScheduledValues(now);
@@ -144,6 +205,15 @@ export class Sound {
 
   render() {
     this.frameId = 0;
+    if (this.on && this.widget) {
+      const t = performance.now() / 1000;
+      this.bars.forEach((bar, i) => {
+        const level = 0.5 + 0.5 * Math.sin(t * (4 + i * 1.3) + i * 2.1) * Math.sin(t * (1.7 + i * 0.6));
+        bar.style.transform = `scaleY(${0.18 + level * 0.82})`;
+      });
+      this.frameId = requestAnimationFrame(this.render);
+      return;
+    }
     if (this.on && this.analyser) {
       this.analyser.getByteFrequencyData(this.data);
       this.bars.forEach((bar, i) => {

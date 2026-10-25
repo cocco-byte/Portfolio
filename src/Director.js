@@ -171,7 +171,14 @@ const { clamp, lerp } = THREE.MathUtils;
 const pad = (n) => String(n).padStart(2, '0');
 // Hold still near each station, move in the middle.
 const settle = (t) => THREE.MathUtils.smootherstep(clamp((t - 0.1) / 0.8, 0, 1), 0, 1);
-const hostOf = (href) => new URL(href).hostname.replace(/^www\./, '');
+// Empty for a missing or malformed link, so one bad href can't break the panel.
+const hostOf = (href) => {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+};
 
 // A titled card for works without a video or poster.
 function workCard(work, index) {
@@ -559,10 +566,14 @@ export class Director {
       w.summary.textContent = work.summary;
       w.year.textContent = String(work.year);
       w.role.textContent = work.role;
-      w.host.textContent = hostOf(work.href);
+      const host = hostOf(work.href);
+      w.host.textContent = host;
       w.stack.replaceChildren(...work.stack.map((text) => Object.assign(document.createElement('li'), { textContent: text })));
       w.highlights.replaceChildren(...work.highlights.map((text) => Object.assign(document.createElement('li'), { textContent: text })));
-      w.link.href = work.href;
+      // works without a valid link hide the link line
+      w.link.parentElement.hidden = !host;
+      if (host) w.link.href = work.href;
+      else w.link.removeAttribute('href');
       w.link.setAttribute('aria-label', `${work.name} (opens in a new tab)`);
       w.index.textContent = pad(index + 1);
       this.workButtons?.forEach((button, i) => button.toggleAttribute('aria-current', i === index));

@@ -4,16 +4,19 @@
 export const site = {
   // Shown in the masthead (scrambled until the finale) and drawn in particles
   // at the end of the dive. Keep it short: it is set in one line.
-  name: 'YOUR NAME',
-  tagline: 'Mix the unexpected.',
+  name: 'Anandita Gupta',
+  tagline: 'Wanderer Explorer',
   motif: 'Jellyfish × Beautiful flower',
-  email: 'hello@example.com',
+  email: 'anandita.cocco@gmail.com',
   // POST endpoint for the contact form ({ name, email, message }). When empty
   // the form opens the visitor's mail client instead.
   contactEndpoint: '',
-  // Optional looping track for "Enter with sound". When empty a soft
-  // generated ambience plays instead.
-  audio: '',
+  // Optional looping track for "Enter with sound": an audio file, or a
+  // soundcloud.com track URL (played through SoundCloud's embedded player).
+  // When empty a soft generated ambience plays instead.
+  audio: 'https://soundcloud.com/kristie-alexandra/passionfruit-drake-cover',
+  // Credit shown in the footer when a track is set. Leave empty to hide it.
+  audioCredit: { text: 'Passionfruit (Drake cover) by Kristie Alexandra', href: 'https://soundcloud.com/kristie-alexandra/passionfruit-drake-cover' },
 };
 
 export const services = [
@@ -31,24 +34,30 @@ export const services = [
 // or `poster` (image) are optional; without them a titled card is generated.
 export const works = [
   {
-    name: 'PROJECT ONE',
-    href: 'https://example.com/',
+    name: 'Tethered',
+    href: 'https://github.com/Kirito-Excalibur/Tethered',
     year: 2026,
-    role: 'Design, Development',
-    summary: 'A corporate site that lets large photography carry the story.',
-    highlights: ['Full-bleed imagery that sells the space', 'Headings choreographed to scroll'],
-    stack: ['HTML / CSS', 'JavaScript', 'GSAP'],
-    hue: '#c9b79c',
+    role: 'Design, Frontend Development',
+    summary: 'A login-free brainstorming app for creating and sharing interactive mind maps.',
+    highlights: ['URL-based idea sharing without authentication',
+    'Customizable nodes with colors, fonts, images, and GIFs'],
+    stack: ['React.js', 'Fabric.js', 'Netlify'],
+    hue: '#6aa7ff',
   },
   {
-    name: 'PROJECT TWO',
-    href: 'https://example.com/',
-    year: 2025,
-    role: 'Design, 3D, Development',
-    summary: 'Real-time 3D on a night road, with kinetic type between chapters.',
-    highlights: ['A drive rendered live in WebGL', 'Sections that swap as you travel'],
-    stack: ['Three.js', 'WebGL', 'GSAP'],
-    hue: '#6aa7ff',
+    
+  name: 'RD Khata',
+  href: 'https://github.com/cocco-byte/RD_Khata',
+  year: 2026,
+  role: 'Full-Stack Development, Database Design',
+  summary: 'A role-based daily collection tracking platform with secure authentication and visual payment history.',
+  highlights: [
+    'Interactive attendance calendar tracking paid, missed, and upcoming payments',
+    'Secure JWT authentication with role-based access control'
+  ],
+  stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma'],
+  hue: '#4ade80',
+
   },
   {
     name: 'PROJECT THREE',
